@@ -29,7 +29,7 @@ namespace Store.Web
 
 
             app.MapControllers();
-
+            Console.WriteLine("Hello From Dev");
             app.Run();
         }
     }
