@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Store.Repository.Interfaces
 {
-    public interface IGenericRepoistory<TEntity,TKey> where TEntity : BaseEntity<TKey>
+    public interface IGenericRepoistory<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
         Task<TEntity> GetByIdAsync(TKey? id);
         //Task<TEntity> GetByIdAsNoTrackingAsync(TKey? id);
