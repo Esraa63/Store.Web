@@ -19,7 +19,9 @@ namespace Store.Repository.Specifications
                 query = query.OrderBy(specs.OrderBy);
             if(specs.OrderByDesending is not null)
                 query = query.OrderByDescending(specs.OrderByDesending);
-           query = specs.Includs.Aggregate(query, (current, includeExpression) => current.Include(includeExpression));
+            if (specs.IsPaginated)
+                query = query.Skip(specs.Skip).Take(specs.Take);
+            query = specs.Includs.Aggregate(query, (current, includeExpression) => current.Include(includeExpression));
             return query;
         }
     }

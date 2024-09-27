@@ -17,6 +17,9 @@ namespace Store.Repository.Specifications
       
         Expression<Func<T,object>> OrderBy { get; }
         Expression<Func<T, object>> OrderByDesending { get; }
+        int Take { get; }   
+        int Skip { get; }
+        bool IsPaginated { get; }
 
     }
 }
