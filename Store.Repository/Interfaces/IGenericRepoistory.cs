@@ -1,4 +1,5 @@
 ﻿using Store.Data.Entities;
+using Store.Repository.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,15 @@ namespace Store.Repository.Interfaces
 {
     public interface IGenericRepoistory<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
-        Task<TEntity> GetByIdAsync(TKey? id);
+         Task<TEntity> GetByIdAsync(TKey? id);
         //Task<TEntity> GetByIdAsNoTrackingAsync(TKey? id);
-        Task<IReadOnlyList<TEntity>> GetAllAsync();
-        Task<IReadOnlyList<TEntity>> GetAllAsNoTrackingAsync();
-        Task AddAsync(TEntity entity);
-        void Update(TEntity entity);
-        void Delete(TEntity entity);
+         Task<IReadOnlyList<TEntity>> GetAllAsync();
+         Task<TEntity> GetWithSpecificationByIdAsync(ISpecification<TEntity> specs);
+         Task<IReadOnlyList<TEntity>> GetAllWithSpesificationAsync(ISpecification<TEntity> specs);
+         Task<int> GetCountSpesificationAsync(ISpecification<TEntity> specs);
+         Task<IReadOnlyList<TEntity>> GetAllAsNoTrackingAsync();
+         Task AddAsync(TEntity entity);
+         void Update(TEntity entity);
+         void Delete(TEntity entity);
     }
 }
