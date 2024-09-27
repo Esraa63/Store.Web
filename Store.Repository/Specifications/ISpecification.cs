@@ -14,5 +14,9 @@ namespace Store.Repository.Specifications
 
         //Includs
         List <Expression<Func<T,object>>> Includs { get; }
+      
+        Expression<Func<T,object>> OrderBy { get; }
+        Expression<Func<T, object>> OrderByDesending { get; }
+
     }
 }

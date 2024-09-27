@@ -15,7 +15,11 @@ namespace Store.Repository.Specifications
             var query = inputQuery;
             if(specs.Criteria is not null)
                 query=query.Where(specs.Criteria);
-            query = specs.Includs.Aggregate(query, (current, includeExpression) => current.Include(includeExpression));
+            if(specs.OrderBy is not null)
+                query = query.OrderBy(specs.OrderBy);
+            if(specs.OrderByDesending is not null)
+                query = query.OrderByDescending(specs.OrderByDesending);
+           query = specs.Includs.Aggregate(query, (current, includeExpression) => current.Include(includeExpression));
             return query;
         }
     }
