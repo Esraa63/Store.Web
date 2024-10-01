@@ -4,6 +4,7 @@ using Store.Repository.Repositories;
 using Store.Service.Services.ProductServices.Dtos;
 using Store.Service.Services.ProductServices;
 using Store.Service.HandleResponses;
+using Store.Service.Services.CacheService;
 
 
 namespace Store.Web.Extensions
@@ -14,6 +15,7 @@ namespace Store.Web.Extensions
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICacheService, CacheService>();
             services.AddAutoMapper(typeof(ProductProfile));
 
             services.Configure<ApiBehaviorOptions>(options

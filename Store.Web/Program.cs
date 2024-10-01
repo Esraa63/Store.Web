@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using Store.Data.Contexts;
 using Store.Repository;
 using Store.Repository.Interfaces;
@@ -26,6 +27,12 @@ namespace Store.Web
             builder.Services.AddDbContext<StoreDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefultConnection"));
+            });
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
+            {
+                var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
+                return ConnectionMultiplexer.Connect(configuration);
             });
 
             builder.Services.AddApplicationServices();
