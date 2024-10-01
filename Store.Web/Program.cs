@@ -1,9 +1,11 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Store.Data.Contexts;
 using Store.Repository;
 using Store.Repository.Interfaces;
 using Store.Repository.Repositories;
+using Store.Service.HandleResponses;
 using Store.Service.Services.ProductServices;
 using Store.Service.Services.ProductServices.Dtos;
 using Store.Web.Helper;
@@ -28,6 +30,23 @@ namespace Store.Web
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddAutoMapper(typeof(ProductProfile));
+
+            builder.Services.Configure<ApiBehaviorOptions>(options
+                =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState.Where(model => model.Value?.Errors.Count > 0)
+                    .SelectMany(model => model.Value?.Errors)
+                    .Select(error => error.ErrorMessage)
+                    .ToList();
+                    var errorResponse = new ValidationErrorResponse
+                    {
+                        Errors = errors
+                    };
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
