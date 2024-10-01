@@ -26,4 +26,4 @@ namespace Store.Repository.Specifications.ProductSpecs
             set => _search = value?.Trim().ToLower(); }
         }
     }
-}
+
