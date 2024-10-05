@@ -1,14 +1,8 @@
 
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using Store.Data.Contexts;
-using Store.Repository;
-using Store.Repository.Interfaces;
-using Store.Repository.Repositories;
-using Store.Service.HandleResponses;
-using Store.Service.Services.ProductServices;
-using Store.Service.Services.ProductServices.Dtos;
 using Store.Web.Extensions;
 using Store.Web.Helper;
 using Store.Web.Middleware;
@@ -27,8 +21,11 @@ namespace Store.Web
             builder.Services.AddDbContext<StoreDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefultConnection"));
-            });
-
+            }); 
+             builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
+             {
+                 options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+             });
             builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
             {
                 var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
@@ -56,9 +53,10 @@ namespace Store.Web
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-
+           
             app.MapControllers();
    
             app.Run();
