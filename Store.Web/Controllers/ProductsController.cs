@@ -26,7 +26,7 @@ namespace Store.Web.Controllers
         => Ok(await _productService.GetAllTypesAsync());
 
         [HttpGet]
-        [Cache(10)]
+        //[Cache(10)]
         public async Task<ActionResult<IReadOnlyList<ProductDetailsDto>>> GetAllProducts([FromQuery] ProductSpecification input)
         => Ok(await _productService.GetAllProductsAsync(input));
 

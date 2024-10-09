@@ -23,5 +23,13 @@ namespace Store.Web.Controllers
                 return BadRequest(new CustomException(400,"Email Dose Not Exists"));
             return Ok(user);
         }
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> Register(RegisterDto input)
+        {
+            var user = await _userService.Register(input);
+            if (user is null)
+                return BadRequest(new CustomException(400, "Email Already Exists"));
+            return Ok(user);
+        }
     }
 }

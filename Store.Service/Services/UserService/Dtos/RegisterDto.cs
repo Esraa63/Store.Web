@@ -13,10 +13,10 @@ namespace Store.Service.Services.UserService.Dtos
         public string DisplayName { get; set; }
         [Required]
         [EmailAddress]
-        public string EmailAddress { get; set; }
+        public string Email { get; set; }
         [Required]
         [RegularExpression("(?=^.{6,10}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$",
-            ErrorMessage ="Password Must Have 1 UpperCase 1 LowerCase 1 Number , 1 Non Alphan")]
+            ErrorMessage = "Password Must Have 1 UpperCase 1 LowerCase 1 Number , 1 Non Alphabet")]
         public string Password { get; set; }
     }
 }
