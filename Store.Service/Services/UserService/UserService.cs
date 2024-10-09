@@ -65,5 +65,7 @@ namespace Store.Service.Services.UserService
             };
             
         }
+
+        
     }
 }
