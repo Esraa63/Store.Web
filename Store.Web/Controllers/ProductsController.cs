@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Store.Repository.Specifications.ProductSpecs;
 using Store.Service.Services.ProductServices;
@@ -7,7 +8,7 @@ using Store.Web.Helper;
 
 namespace Store.Web.Controllers
 {
-   
+    [Authorize]
     public class ProductsController : BaseController
     {
         private readonly IProductService _productService;
@@ -25,7 +26,7 @@ namespace Store.Web.Controllers
         => Ok(await _productService.GetAllTypesAsync());
 
         [HttpGet]
-        [Cache(10)]
+        //[Cache(10)]
         public async Task<ActionResult<IReadOnlyList<ProductDetailsDto>>> GetAllProducts([FromQuery] ProductSpecification input)
         => Ok(await _productService.GetAllProductsAsync(input));
 
