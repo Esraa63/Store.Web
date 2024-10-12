@@ -6,11 +6,11 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Store.Repository.Specifications.ProductSpecs
+namespace Store.Repository.Specifications.OrderSpecs
 {
     public class OrderWithItemSpecification : BaseSpecification<Order>
     {
-        public OrderWithItemSpecification(string buyerEmail) 
+        public OrderWithItemSpecification(string buyerEmail)
             : base(order => order.BuyerEmail == buyerEmail)
         {
             AddInclude(order => order.DeliveryMethod);
@@ -23,7 +23,7 @@ namespace Store.Repository.Specifications.ProductSpecs
         {
             AddInclude(order => order.DeliveryMethod);
             AddInclude(order => order.OrderItems);
-           
+
         }
     }
 }
