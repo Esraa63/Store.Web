@@ -15,5 +15,6 @@ namespace Store.Service.OrderService.Dtos
         [Required]
         public int DeliveryMethodId { get; set; }
         public AddressDto ShippingAddress { get; set; }
+        public string? PaymentIntentId { get; set; }
     }
 }

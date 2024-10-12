@@ -12,6 +12,7 @@ namespace Store.Repository.Basket.Models
         public int? DeliveryMethodId { get; set; }
         public decimal ShippingPrice { get; set; }
         public List<BascetItem> BascetItems { get; set; } = new List<BascetItem>();
-
+        public string? PaymentIntentId { get; set; }
+        public string? ClientSecret { get; set; }
     }
 }
