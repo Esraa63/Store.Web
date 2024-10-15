@@ -100,13 +100,14 @@ namespace Store.Service.OrderService
             
         }
 
-        public async Task<IReadOnlyList<DeliveryMethod>> GetAllDeliveryMethod()
+        public async Task<IReadOnlyList<DeliveryMethod>> GetAllDeliveryMethodAsync()
         => await _unitOfWork.Repoistory<DeliveryMethod, int>().GetAllAsync();
 
         public async Task<IReadOnlyList<OrderDetailsDto>> GetAllOrdersForUserAsync(string buyerEmail)
         {
             var specs = new OrderWithItemSpecification(buyerEmail);
             var orders = await _unitOfWork.Repoistory<Order, Guid>().GetAllWithSpesificationAsync(specs);
+          
             if (!orders.Any())
                 throw new Exception("You Do Not have any Order yet!");
             var mappedOrders = _mapper.Map<List<OrderDetailsDto>>(orders);
