@@ -3,14 +3,10 @@ using Store.Data.Entities;
 using Store.Data.Entities.OrderEntities;
 using Store.Repository.Interfaces;
 using Store.Repository.Specifications.OrderSpecs;
-using Store.Repository.Specifications.ProductSpecs;
 using Store.Service.OrderService.Dtos;
 using Store.Service.Services.BasketService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Store.Service.Services.PaymentService;
+using Product = Store.Data.Entities.Product;
 
 namespace Store.Service.OrderService
 {
@@ -19,19 +15,22 @@ namespace Store.Service.OrderService
         private readonly IBasketService _basketService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IPaymentService _paymentService;
 
         public OrderService(IBasketService basketService
             , IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IMapper mapper,
+            IPaymentService paymentService)
         {
             _basketService = basketService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _paymentService = paymentService;
         }
         public async Task<OrderDetailsDto> CreateOrderAsync(OrderDto input)
         {
             var basket=await _basketService.GetBasketAsync(input.BasketId);
-            if (basket == null)
+            if (basket is null)
                 throw new Exception("Basket Not Exist");
             #region Fill Order Item List With Items in the Basket
 
@@ -39,7 +38,7 @@ namespace Store.Service.OrderService
             foreach (var item in basket.BascetItems)
             {
                 var productItem = await _unitOfWork.Repoistory<Product, int>().GetByIdAsync(item.ProductId);
-                if (productItem == null)
+                if (productItem is null)
                     throw new Exception($"Product With Id : {item.ProductId} Not Exist");
                 var itemOrdered = new ProductItem
                 {
@@ -69,14 +68,18 @@ namespace Store.Service.OrderService
                 #region Caluclate Subtotal
 
                 var subtotal = orderItems.Sum(item => item.Quantity * item.Price);
-                #endregion
+            #endregion
 
-                #region To Do Payment
+            #region To Do Payment
+            var specs = new OrderWithPaymentIntentSpecification(basket.PaymentIntentId);
+            var existingOrder = await _unitOfWork.Repoistory<Order, Guid>().GetWithSpecificationByIdAsync(specs);
+            if (existingOrder is null)
+                await _paymentService.CreateOrUpdatePaymentIntent(basket);
+            
+            #endregion
 
-                #endregion
-
-                #region Create Order
-                var mappedShippingAddress = _mapper.Map<ShippingAddress>(input.ShippingAddress);
+            #region Create Order
+            var mappedShippingAddress = _mapper.Map<ShippingAddress>(input.ShippingAddress);
                 var mappedOrderItems=_mapper.Map<List<OrderItem>>(orderItems);
                 var order = new Order
                 {
@@ -87,6 +90,7 @@ namespace Store.Service.OrderService
                     BasketId= input.BasketId,
                     OrderItems=mappedOrderItems,
                     SubTotal=subtotal,
+                    PaymentIntentId=basket.PaymentIntentId
                 };
                 await _unitOfWork.Repoistory<Order, Guid>().AddAsync(order);
                 await _unitOfWork.CompleteAsync();
