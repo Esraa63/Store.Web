@@ -18,7 +18,7 @@ namespace Store.Web.Controllers
             _orderService = orderService;
         }
         [HttpPost]
-        public async Task<ActionResult<OrderResultDto>> CreateOrderAsync(OrderDto input)
+        public async Task<ActionResult<OrderDetailsDto>> CreateOrderAsync(OrderDto input)
         {
             var order = await _orderService.CreateOrderAsync(input);
             if (order is null)
@@ -26,14 +26,14 @@ namespace Store.Web.Controllers
             return Ok(order);
         }
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<OrderResultDto>>> GetAllOrdersForUserAsync()
+        public async Task<ActionResult<IReadOnlyList<OrderDetailsDto>>> GetAllOrdersForUserAsync()
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
             var orders = await _orderService.GetAllOrdersForUserAsync(email);
             return Ok(orders);
         }
         [HttpGet]
-        public async Task<ActionResult<OrderResultDto>> GetOrderByIdAsync(Guid id)
+        public async Task<ActionResult<OrderDetailsDto>> GetOrderByIdAsync(Guid id)
         {
             var order = await _orderService.GetOrderByIdAsync(id);
             return Ok(order);
