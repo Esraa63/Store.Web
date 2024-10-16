@@ -19,7 +19,7 @@ namespace Store.Service.OrderService.Dtos
         }
         public string Resolve(OrderItem source, OrderItemDto destination, string destMember, ResolutionContext context)
         {
-            if (!string.IsNullOrEmpty(source.ProductItem.ProductName))
+            if (!string.IsNullOrEmpty(source.ProductItem.PictureUrl) || !source.ProductItem.PictureUrl.Contains(source.ProductItem.PictureUrl))
                 return $"{_configuration["BaseUrl"]}/{source.ProductItem.ProductName}";
             return null;
         }

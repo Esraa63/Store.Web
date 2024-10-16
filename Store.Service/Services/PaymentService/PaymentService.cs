@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Store.Data.Entities;
 using Store.Data.Entities.OrderEntities;
 using Store.Repository.Interfaces;
@@ -9,12 +8,6 @@ using Store.Service.OrderService.Dtos;
 using Store.Service.Services.BasketService;
 using Store.Service.Services.BasketService.Dto;
 using Stripe;
-using Stripe.V2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Product = Store.Data.Entities.Product;
 
 namespace Store.Service.Services.PaymentService

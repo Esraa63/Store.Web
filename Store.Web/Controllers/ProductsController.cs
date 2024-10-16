@@ -12,7 +12,6 @@ namespace Store.Web.Controllers
     public class ProductsController : BaseController
     {
         private readonly IProductService _productService;
-
         public ProductsController(IProductService productService)
         {
             _productService = productService;
