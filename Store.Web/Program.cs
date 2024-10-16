@@ -18,19 +18,20 @@ namespace Store.Web
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<StoreDbContext>(options =>
-            {
+             builder.Services.AddDbContext<StoreDbContext>(options =>
+             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefultConnection"));
-            }); 
+             }); 
              builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
              {
                  options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
              });
-            builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
-            {
-                var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
-                return ConnectionMultiplexer.Connect(configuration);
-            });
+ 
+             builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
+             {
+                var configurations = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
+                return ConnectionMultiplexer.Connect(configurations);
+             });
 
             builder.Services.AddApplicationServices();
 
