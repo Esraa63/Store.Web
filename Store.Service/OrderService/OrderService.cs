@@ -92,10 +92,17 @@ namespace Store.Service.OrderService
                     SubTotal=subtotal,
                     PaymentIntentId=basket.PaymentIntentId
                 };
+            try {
                 await _unitOfWork.Repoistory<Order, Guid>().AddAsync(order);
                 await _unitOfWork.CompleteAsync();
                 var mappedOrder = _mapper.Map<OrderDetailsDto>(order);
                 return mappedOrder;
+            }
+            catch (Exception ex) {
+                throw new Exception(ex.Message);
+            }
+                
+                
                 #endregion
             
         }
