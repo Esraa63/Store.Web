@@ -39,6 +39,15 @@ namespace Store.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerDocumentation();
             builder.Services.AddIdentityServices(builder.Configuration);
+          
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http:localhost:4200", "https://localhost:7249");
+                });
+            });
+
             var app = builder.Build();
 
             await ApplySeeding.ApplySeedingAsync(app);
@@ -53,6 +62,8 @@ namespace Store.Web
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();
